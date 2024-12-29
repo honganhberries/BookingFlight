@@ -13,4 +13,5 @@
     <string name="khoihanh">Ngày khởi hành </string>
     <string name="ngayve">Ngày trở về </string>
     <string name="country_prompt">Lựa chọn</string>
+    <string name="map_api">AIzaSyDlrAXw5AgUrFOrLZJC8RcK8ADQ4Vb_Jaw</string>
 </resources>

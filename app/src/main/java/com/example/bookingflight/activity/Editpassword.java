@@ -3,6 +3,7 @@ package com.example.bookingflight.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,30 +13,41 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bookingflight.R;
+import com.example.bookingflight.inteface.ApiService;
 import com.example.bookingflight.model.User;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Editpassword extends AppCompatActivity {
     private EditText txOldPassword, txNewPassword, txConfirmPassword;
-    Button btnSave, btnCancel;
-    ImageView backButton;
-    private List<User> mListUser;
+    private Button btnSave, btnCancel;
+    private ImageView backButton;
+    private User currentUser;
+    private String maKH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editpassword);
+
         txOldPassword = findViewById(R.id.txOldPassword);
         txNewPassword = findViewById(R.id.txNewPassword);
         txConfirmPassword = findViewById(R.id.txConfirmPassword);
         backButton = findViewById(R.id.backButton);
         btnSave = findViewById(R.id.btnSave);
-        btnCancel = findViewById(R.id.btnCancel);
-        mListUser = new ArrayList<>();
+        // Nhận currentUser từ Intent
+        currentUser = getIntent().getParcelableExtra("object_user");
+        if (currentUser != null) {
+            Log.d("User Info", "User maKH: " + currentUser.getMaKH());
+        }
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,66 +66,54 @@ public class Editpassword extends AppCompatActivity {
                 String confirmPassword = txConfirmPassword.getText().toString().trim();
 
                 if (validateInput(oldPassword, newPassword, confirmPassword)) {
-                    // Kiểm tra mật khẩu cũ có đúng không
                     if (checkOldPassword(oldPassword)) {
-                        // Băm và salt mật khẩu mới trước khi lưu trữ hoặc cập nhật
-                        String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-
-                        // Cập nhật mật khẩu mới trong danh sách người dùng
-                        updatePassword(hashedNewPassword);
-
-                        // Hiển thị thông báo cập nhật thành công
-                        Toast.makeText(Editpassword.this, "Cập nhật mật khẩu thành công.", Toast.LENGTH_SHORT).show();
+                        updatePasswordOnServer(currentUser.getMaKH(), newPassword);
                     } else {
-                        // Hiển thị thông báo mật khẩu cũ không đúng
-                        Log.d("Debug", "hashedOldPassword: " + oldPassword);
-                        Log.d("Debug", "user.getPassword(): " + getCurrentUser().getPassword());
                         Toast.makeText(Editpassword.this, "Mật khẩu cũ không đúng.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Hiển thị thông báo về lỗi nhập liệu
                     Toast.makeText(Editpassword.this, "Vui lòng nhập đầy đủ thông tin và xác nhận mật khẩu đúng.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void updatePassword(String hashedNewPassword) {
-        User currentUser = getCurrentUser();
-        if (currentUser != null) {
-            currentUser.setPassword(hashedNewPassword);
-            // Cập nhật danh sách người dùng
-            updatePasswordOnServer(currentUser);
-        }
-    }
+    private void updatePasswordOnServer(String maKH, String newPassword) {
+        // Băm mật khẩu mới và tạo salt
+        String salt = BCrypt.gensalt();
+        String hashedNewPassword = BCrypt.hashpw(newPassword, salt);
+        Map<String, String> updateParams = new HashMap<>();
+        updateParams.put("password", hashedNewPassword); // Mật khẩu mới đã băm
+        updateParams.put("salt", salt);
+        updateParams.put("maKH", maKH);
 
-    private void updatePasswordOnServer(User updatedUser) {
-        for (int i = 0; i < mListUser.size(); i++) {
-            if (mListUser.get(i).getEmail().equals(updatedUser.getEmail())) {
-                // Cập nhật thông tin người dùng trong danh sách
-                mListUser.set(i, updatedUser);
-                break;
+        Call<ApiResponse<List<User>>> callUpdate = ApiService.searchFlight.updatePassw(maKH, updateParams);
+        callUpdate.enqueue(new Callback<ApiResponse<List<User>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<User>>> call, Response<ApiResponse<List<User>>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Editpassword.this, "Cập nhật mật khẩu thành công.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Editpassword.this, LoginProfile.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Editpassword.this, "Cập nhật dữ liệu thất bại.", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<User>>> call, Throwable t) {
+                Toast.makeText(Editpassword.this, "Có lỗi khi kết nối đến server.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean checkOldPassword(String oldPassword) {
-        User user = getCurrentUser();
-        return user != null && BCrypt.checkpw(oldPassword, user.getPassword());
-    }
-
-    private User getCurrentUser() {
-        SessionManager sessionManager = new SessionManager(getApplicationContext());
-        String currentUserEmail = sessionManager.getEmail();
-
-        // Tìm người dùng trong danh sách
-        for (User user : mListUser) {
-            if (currentUserEmail.equals(user.getEmail())) {
-                return user;
-            }
+        if (currentUser == null) {
+            Toast.makeText(Editpassword.this, "Không tìm thấy người dùng.", Toast.LENGTH_SHORT).show();
+            return false;
         }
-
-        return null; // Trả về null nếu không tìm thấy người dùng
+        return BCrypt.checkpw(oldPassword, currentUser.getPassword());
     }
 
     private boolean validateInput(String oldPassword, String newPassword, String confirmPassword) {

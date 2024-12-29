@@ -23,19 +23,18 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
 
     @NonNull
     @Override
-    public TicketAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vedadat, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TicketAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BookTicket bookedTicket = bookedTickets.get(position);
         holder.placeNameTextView.setText("Mã chuyến bay: " + bookedTicket.getMaCB());
         holder.descriptionTextView.setText("Mã khách hàng: " + bookedTicket.getMaKH());
         holder.descriptionTextView2.setText("Đi từ: " + bookedTicket.getDiaDiemDi() + " - " + "Đến: " + bookedTicket.getDiaDiemDen());
         holder.giaVeTextView.setText("Hạng vé: " + bookedTicket.getHangVe());
-        holder.tongThanhToan.setText("Đã thanh toán: " + bookedTicket.getTongThanhToan() + "" + "VND");
     }
 
     @Override
@@ -44,14 +43,13 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView placeNameTextView , descriptionTextView , descriptionTextView2, giaVeTextView, tongThanhToan;
+        TextView placeNameTextView , descriptionTextView , descriptionTextView2, giaVeTextView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             placeNameTextView = itemView.findViewById(R.id.placeNameTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             descriptionTextView2 = itemView.findViewById(R.id.descriptionTextView2);
             giaVeTextView = itemView.findViewById(R.id.giaVeTextView);
-            tongThanhToan = itemView.findViewById(R.id.tongThanhToan);
         }
     }
 }

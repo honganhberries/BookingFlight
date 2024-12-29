@@ -8,13 +8,17 @@ public class PostTicket {
     private String soLuongDat;
     private String tongThanhToan;
     private String create_at ;
-    public PostTicket(String order_id, String maVe, String maCB, String maKH, String soLuongDat, String tongThanhToan) {
+    private String nguonDat;
+    private String maShop;
+    public PostTicket(String order_id, String maVe, String maCB, String maKH, String soLuongDat,
+                      String tongThanhToan, String nguonDat) {
         this.order_id = order_id;
         this.maVe = maVe;
         this.maCB = maCB;
         this.maKH = maKH;
         this.soLuongDat = soLuongDat;
         this.tongThanhToan = tongThanhToan;
+        this.nguonDat = nguonDat;
     }
 
     public String getOrder_id() {

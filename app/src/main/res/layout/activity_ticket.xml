@@ -273,6 +273,34 @@
 
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/btnVoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chọn khuyến mãi để giảm giá"
+                        android:textSize="16dp"
+                        android:textColor="@color/green"
+                        android:textAlignment="textEnd"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="KHUYẾN MÃI"
+                        android:textColor="@color/dividerLight"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+                        <TextView
+                            android:id="@+id/discount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textSize="@dimen/text_l"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/padding_small"

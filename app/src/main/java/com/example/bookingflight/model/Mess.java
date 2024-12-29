@@ -9,11 +9,56 @@ public class Mess implements Parcelable{
     private String thoiGianGui;
     private String maKH;
     private String noiDung2;
+    private boolean isAutoReply;
+    private boolean fromCustomer;
+    private String fullname;
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    // Constructor cho các tin nhắn
+    public Mess(String maKH, String noiDung2, String noiDung1,String thoiGianGui) {
+        this.maKH = maKH;
+        this.noiDung2 = noiDung2;
+        this.thoiGianGui = thoiGianGui;
+        this.noiDung1 = noiDung1;// Khởi tạo giá trị
+    }
+    public Mess(String maKH, String fullname, String noiDung2, String noiDung1,String thoiGianGui) {
+        this.maKH = maKH;
+        this.fullname = fullname ;
+        this.noiDung2 = noiDung2;
+        this.thoiGianGui = thoiGianGui;
+        this.noiDung1 = noiDung1;// Khởi tạo giá trị
+    }
+
+    public boolean isFromCustomer() {
+        return fromCustomer;
+    }
+
+    public void setFromCustomer(boolean fromCustomer) {
+        this.fromCustomer = fromCustomer;
+    }
 
     public Mess(String maKH, String noiDung2, String thoiGianGui) {
-        this.noiDung2 = noiDung2;
         this.maKH = maKH;
+        this.noiDung2 = noiDung2;
         this.thoiGianGui = thoiGianGui;
+    }
+    public Mess(){
+
+    }
+
+    public boolean isAutoReply() {
+        return isAutoReply;
+    }
+
+    public void setAutoReply(boolean autoReply) {
+        isAutoReply = autoReply;
     }
 
     public String getMaTN() {
@@ -75,7 +120,7 @@ public class Mess implements Parcelable{
         noiDung2 = in.readString();
     }
 
-    public static final Parcelable.Creator<Mess> CREATOR = new Parcelable.Creator<Mess>() {
+    public static final Creator<Mess> CREATOR = new Creator<Mess>() {
         @Override
         public Mess createFromParcel(Parcel in) {
             return new Mess(in);

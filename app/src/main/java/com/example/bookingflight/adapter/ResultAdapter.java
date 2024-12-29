@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingflight.R;
@@ -113,7 +115,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         private RelativeLayout layoutItem ;
         private TextView descriptionTextView,descriptionTextView2;
         private TextView giaveTextView, maCB , gioBayTextView;
-        private TextView ngayDi, ngayDen;
+        private TextView ngayDi, ngayDen, txtSoLuongCon;
+        private ImageView imageStatus;
+
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,17 +130,40 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
             ngayDi = itemView.findViewById(R.id.ngayDi);
             ngayDen = itemView.findViewById(R.id.ngayDen);
             gioBayTextView = itemView.findViewById(R.id.gioBayTextView);
+            txtSoLuongCon = itemView.findViewById(R.id.txtSoLuongCon);
+
         }
 
         public void bind(Result result) {
             maCB.setText("Mã Chuyến Bay: " + result.getMaCB());
-            gioBayTextView.setText("Giờ bay:" + result.getGioBay());
+            gioBayTextView.setText("Giờ bay: " + result.getGioBay());
             ngayDi.setText(result.getNgayDi());
             ngayDen.setText(result.getNgayDen());
             placeNameTextView.setText(result.getDiaDiemDi());
             placeNameTextView2.setText(result.getDiaDiemDen());
+            CardView cardView = itemView.findViewById(R.id.cvAirlines);
 
+            // Tính tổng số lượng vé
+            String soLuongConString = result.getSoLuongCon(); // Giả định rằng bạn có phương thức này
+            if (soLuongConString != null && !soLuongConString.isEmpty()) {
+                String[] soLuongArray = soLuongConString.split(",\\s*");
+                int totalSoLuongCon = 0;
 
+                for (String s : soLuongArray) {
+                    totalSoLuongCon += Integer.parseInt(s.trim());
+                }
+                if(totalSoLuongCon > 0){
+                    // Hiển thị tổng số lượng vé
+                    txtSoLuongCon.setText(String.valueOf(totalSoLuongCon)); // Giả định bạn có một TextView để hiển thị
+                    Log.d("SoLuongCon", "Tổng số lượng còn: " + totalSoLuongCon);
+                    cardView.setVisibility(View.VISIBLE);
+                }else{
+                    cardView.setVisibility(View.GONE);
+                }
+
+            } else {
+                txtSoLuongCon.setText("Không có thông tin số lượng");
+            }
         }
     }
 

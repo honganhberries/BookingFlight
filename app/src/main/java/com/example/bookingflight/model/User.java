@@ -25,8 +25,18 @@ public class User implements Parcelable {
     private String diaChi;
     private String soDT;
     private String loaiHanhKhach;
+    private String ngayDangKy;
+
+    public String getNgayDangKy() {
+        return ngayDangKy;
+    }
+
+    public void setNgayDangKy(String ngayDangKy) {
+        this.ngayDangKy = ngayDangKy;
+    }
 
     public User(Parcel in) {
+        maKH = in.readString();
         email = in.readString();
         password = in.readString();
         fullname = in.readString();
@@ -38,9 +48,11 @@ public class User implements Parcelable {
         diaChi = in.readString();
         soDT = in.readString();
         loaiHanhKhach = in.readString();
+        ngayDangKy = in.readString();
     }
 
-    public User(String fullname, String email, String ngaySinh, String gioiTinh, String diaChi, String soDT) {
+    public User(String maKH, String fullname, String email, String ngaySinh, String gioiTinh, String diaChi, String soDT) {
+        this.maKH = maKH;
         this.fullname = fullname;
         this.email = email;
         this.gioiTinh = gioiTinh;
@@ -164,6 +176,7 @@ public class User implements Parcelable {
     @Override
     public String toString() {
         return "User{" +
+                "maKH='" + maKH + '\'' +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", salt='" + salt + '\'' +
@@ -186,6 +199,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(maKH);
         dest.writeString(email);
         dest.writeString(password);
         dest.writeString(fullname);
@@ -197,6 +211,7 @@ public class User implements Parcelable {
         dest.writeString(diaChi);
         dest.writeString(soDT);
         dest.writeString(loaiHanhKhach);
+        dest.writeString(ngayDangKy);
     }
 
     public String getSalt() {

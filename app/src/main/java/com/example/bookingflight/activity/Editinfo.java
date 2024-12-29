@@ -87,15 +87,15 @@ public class Editinfo extends AppCompatActivity {
                     Log.d("UpdateInfo", "Ngay Sinh Before Formatting: " + ngaySinh);
 
                     LocalDate ngaySinhDate = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         ngaySinhDate = LocalDate.parse(ngaySinh, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     }
                     DateTimeFormatter formatter = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     }
                     String ngaySinhFormatted = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         ngaySinhFormatted = ngaySinhDate.format(formatter);
                     }
 

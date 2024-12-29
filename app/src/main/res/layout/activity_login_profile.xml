@@ -15,12 +15,42 @@
         android:background="#4296D8"
         android:padding="12dp"
         android:src="@drawable/ic_logout" />
+    <ImageView
+        android:id="@+id/bellButton"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:background="#4296D8"
+        android:padding="12dp"
+        android:src="@drawable/notify_img" />
+
+    <TextView
+        android:id="@+id/notificationCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/bellButton"
+        android:layout_alignBottom="@id/bellButton"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/circle_background_1"
+        android:padding="4dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:minWidth="24dp"
+        android:minHeight="24dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginTop="-10dp"/>
+
+
     <TextView
         android:id="@+id/ttcanhan"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:text="Thông tin tài khoản"
         android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
         android:background="#4296D8"
         android:padding="10dp"
         android:textAlignment="center"
@@ -32,7 +62,7 @@
         android:layout_width="70dp"
         android:layout_height="100dp"
         android:src="@drawable/avt2"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="80dp"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +70,7 @@
         android:layout_toEndOf="@+id/img_ticket"
         android:layout_marginStart="2dp"
         android:orientation="vertical"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="80dp"
         android:background="#FFFFFF">
         <TextView
             android:id="@+id/fullname"

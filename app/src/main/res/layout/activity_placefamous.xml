@@ -45,7 +45,7 @@
                 android:id="@+id/textname1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="ĐỊA ĐIỂM PHỔ BIẾN"
+                android:text="ĐỊA ĐIỂM TRONG NƯỚC"
                 android:layout_marginTop="20dp"
                 android:textSize="24dp"
                 android:textStyle="bold">
@@ -69,7 +69,7 @@
                 android:layout_height="40dp"
                 android:layout_below="@+id/recyclerView2"
                 android:layout_marginTop="30dp"
-                android:text="THÀNH PHỐ"
+                android:text="ĐỊA ĐIỂM QUỐC TẾ"
                 android:textSize="24dp"
                 android:textStyle="bold" />
 

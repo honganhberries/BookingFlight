@@ -199,6 +199,7 @@ public class YourSearchActivity extends AppCompatActivity {
         }
 
         if (!matchingResults.isEmpty()){
+            // di vao result
 //            Result[] matchingResultsArray = matchingResults.toArray(new Result[0]);
             Intent intent = new Intent(YourSearchActivity.this, ResultActivity.class);
             intent.putParcelableArrayListExtra("object_results", (ArrayList<? extends Parcelable>) new ArrayList<>(matchingResults));
@@ -245,6 +246,10 @@ public class YourSearchActivity extends AppCompatActivity {
                             toAdapter.notifyDataSetChanged();
                             // Lấy danh sách sân bay và cập nhật Spinner
                             updateAirportSpinners();
+
+
+
+
                             // Thêm đoạn mã chuyển đổi thời gian bay vào đây
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                             for (Result result : mListResult) {
@@ -257,6 +262,7 @@ public class YourSearchActivity extends AppCompatActivity {
                             }
                         }
                     }
+
                     @Override
                     public void onFailure(Call<ApiResponse<List<Result>>> call, Throwable t) {
                         Log.e("YourSearchActivity", "Lỗi khi thực hiện cuộc gọi API", t);

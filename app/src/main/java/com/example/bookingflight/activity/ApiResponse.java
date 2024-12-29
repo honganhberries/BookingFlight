@@ -5,6 +5,8 @@ public class ApiResponse<T> {
     private String message;
     private T data;
 
+    private String token;
+
     // Getter và Setter
 
     public int getStatus() {
@@ -29,5 +31,12 @@ public class ApiResponse<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

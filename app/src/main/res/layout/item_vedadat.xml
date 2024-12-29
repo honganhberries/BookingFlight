@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/img_ticket"
         android:layout_width="70dp"
-        android:layout_height="125dp"
+        android:layout_height="100dp"
         android:src="@drawable/ticket"
        />
     <LinearLayout
@@ -46,13 +46,6 @@
             android:textColor="@color/black"/>
         <TextView
             android:id="@+id/giaVeTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-        <TextView
-            android:id="@+id/tongThanhToan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"

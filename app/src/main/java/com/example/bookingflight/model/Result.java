@@ -38,6 +38,8 @@ public class Result implements Parcelable {
         ghiChu = in.readString();
         gioBay = in.readString();
         giaVe = in.readString();
+        soLuongCon = in.readString();
+        hangVe = in.readString();
     }
 
     public static final Creator<Result> CREATOR = new Creator<Result>() {
@@ -139,6 +141,24 @@ public class Result implements Parcelable {
     private String ghiChu;
     private String gioBay;
     private String giaVe;
+    private String soLuongCon;
+    private String hangVe;
+
+    public String getSoLuongCon() {
+        return soLuongCon;
+    }
+
+    public void setSoLuongCon(String soLuongCon) {
+        this.soLuongCon = soLuongCon;
+    }
+
+    public String getHangVe() {
+        return hangVe;
+    }
+
+    public void setHangVe(String hangVe) {
+        this.hangVe = hangVe;
+    }
 
     @Override
     public String toString() {
@@ -173,5 +193,7 @@ public class Result implements Parcelable {
         dest.writeString(ghiChu);
         dest.writeString(gioBay);
         dest.writeString(giaVe);
+        dest.writeString(soLuongCon);
+        dest.writeString(hangVe);
     }
 }

@@ -24,10 +24,12 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
         // Khởi tạo và thiết lập RecyclerView và ResultAdapter
        resultAdapter = new ResultAdapter(this ,new ArrayList<>());
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         recyclerView.setAdapter(resultAdapter);
 
         Bundle bundleReceive = getIntent().getExtras();

@@ -23,7 +23,6 @@ public class BookTicket {
     private String hangVe ;
     private String giaHangVe ;
     private String create_at ;
-    private String tongThanhToan ;
 
     public BookTicket(String maKH, String create_at) {
         this.maKH = maKH ;
@@ -49,13 +48,7 @@ public class BookTicket {
         this.diaChi = diaChi;
     }
 
-    public String getTongThanhToan() {
-        return tongThanhToan;
-    }
 
-    public void setTongThanhToan(String tongThanhToan) {
-        this.tongThanhToan = tongThanhToan;
-    }
 
     public BookTicket(String maKH, String fullname, String email, String password, String gioiTinh, String ngaySinh, String soDT, String maCB, String ngayDen, String ngayDi, String diaDiemDen,
                       String diaDiemDi, String giaVe, String gioBay, String maVe, String soLuongDat, String hangVe, String giaHangVe, String tongGia) {

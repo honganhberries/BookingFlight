@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "794253239376",
+    "firebase_url": "https://bookingflight-169da-default-rtdb.firebaseio.com",
+    "project_id": "bookingflight-169da",
+    "storage_bucket": "bookingflight-169da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794253239376:android:8dca0f00bcfc1adc7edd55",
+        "android_client_info": {
+          "package_name": "com.example.app_user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVatWoRICL8tL0NXfcoivYq6ihmb4FyJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794253239376:android:53ee387e6f545aaf7edd55",
+        "android_client_info": {
+          "package_name": "com.example.bookingflight"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVatWoRICL8tL0NXfcoivYq6ihmb4FyJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

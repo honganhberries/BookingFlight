@@ -125,31 +125,56 @@ public class DetailActivity extends AppCompatActivity {
     private void clickDatVe() {
         User currentUser = getCurrentUser();
         Result selectedFlight = getIntent().getParcelableExtra("object_flight");
+
+        if (selectedFlight == null) {
+            Log.e("DetailActivity", "Selected flight is null");
+            return;
+        }
+
+        if (currentUser == null) {
+            Log.e("DetailActivity", "Current user is null");
+            return;
+        }
+
+        String maCB = selectedFlight.getMaCB();
+        String soLuongCon = selectedFlight.getSoLuongCon();
+        String hangVe = selectedFlight.getHangVe();
         if (resultAdapter != null && selectedFlight != null && currentUser != null) {
             String orderId = generateOrderId(); // Sinh order_id
             Intent intent = new Intent(DetailActivity.this, Ticket.class);
             intent.putExtra("object_user", currentUser);
             intent.putExtra("object_flight", selectedFlight);
             intent.putExtra("order_id", orderId);
+            intent.putExtra("maCB", maCB);
+            intent.putExtra("soLuongCon", soLuongCon);
+            intent.putExtra("hangVe", hangVe);
             startActivity(intent);
             finish();
+        }else {
+            Log.e("DetailActivity", "Result adapter is null");
         }
     }
+
     private String generateOrderId() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ssss");
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+
     private User getCurrentUser() {
+
         SessionManager sessionManager = new SessionManager(getApplicationContext());
-        String currentUserEmail = sessionManager.getEmail();
+        String currentUserEmail = sessionManager.getMaKH();
 
         // Tìm người dùng trong danh sách
         for (User user : mListUser) {
-            if (currentUserEmail.equals(user.getEmail())) {
+            if (currentUserEmail.equals(user.getMaKH())) {
                 return user;
             }
         }
-        return null;
+
+        return null; // Trả về null nếu không tìm thấy người dùng
     }
+
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -122,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         String salt = BCrypt.gensalt();
         // Băm mật khẩu và salt để lưu trữ trong cơ sở dữ liệu
         String hashedPassword = BCrypt.hashpw(password, salt);
+
+        // Lấy ngày hiện tại
+        String ngayDangKy = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
         // Tạo Map dữ liệu người dùng
         Map<String, String> userData = new HashMap<>();
         userData.put("fullname", fullname);
@@ -129,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
         userData.put("password", hashedPassword);
         userData.put("salt", salt);
         userData.put("ngaySinh", ngaySinh);
+        userData.put("ngayDangKy", ngayDangKy); // Thêm ngày đăng ký
+        // Lưu ngày đăng ký vào SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("ngayDangKy", ngayDangKy); // ngayDangKy là giá trị bạn nhận được
+        editor.apply();
 
         // Gọi phương thức postUser trên apiService
         apiService.postUser(userData).enqueue(new Callback<ApiResponse<List<User>>>() {
@@ -143,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void handleResponse(Response<ApiResponse<List<User>>> response) {
         if (response.isSuccessful()) {
