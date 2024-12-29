@@ -14,6 +14,7 @@ import com.example.bookingflight.R;
 public class VerifyOtp extends AppCompatActivity {
     private EditText otpInput;
     private Button btnVerifyOtp;
+    private String receivedOtp;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterotp);
@@ -21,12 +22,15 @@ public class VerifyOtp extends AppCompatActivity {
         otpInput = findViewById(R.id.etOtpCode);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
 
+        // Nhận OTP từ VerifyEmail
+        Intent intent = getIntent();
+        receivedOtp = intent.getStringExtra("generatedOtp");
+
         btnVerifyOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String otp = otpInput.getText().toString().trim();
                 if (validateOtp(otp)) {
-                    // OTP hợp lệ, chuyển sang màn hình đổi mật khẩu
                     Intent intent = new Intent(VerifyOtp.this, Editpassword.class);
                     startActivity(intent);
                     finish();
@@ -38,7 +42,7 @@ public class VerifyOtp extends AppCompatActivity {
     }
 
     private boolean validateOtp(String otp) {
-        return otp.equals("123456");
+        return otp.equals(receivedOtp);
     }
 }
 
