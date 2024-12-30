@@ -20,8 +20,35 @@
         android:id="@+id/tvOtpHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mã OTP đã được gửi qua tin nhắn của email"
+        android:text="Vui lòng nhập mã OTP đã đươợc gửi qua tin nhắn của email"
         android:layout_marginBottom="10dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/tvOtpHint_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian hiệu lực OTP:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:id="@+id/tvCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="90s"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/etOtpCode"
@@ -36,9 +63,10 @@
         android:id="@+id/tvResendOtp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gửi lại sau 179s"
+        android:text="Không nhận được mã OTP ? Gửi lại mã"
         android:layout_marginTop="10dp"
-        android:textColor="@android:color/holo_red_light" />
+        android:textColor="@color/xamdam"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btnVerifyOtp"
@@ -48,5 +76,4 @@
         android:backgroundTint="@color/mdtp_accent_color_dark"
         android:textColor="@android:color/white"
         android:layout_marginTop="20dp" />
-
 </LinearLayout>

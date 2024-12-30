@@ -14,4 +14,6 @@
     <string name="ngayve">Ngày trở về </string>
     <string name="country_prompt">Lựa chọn</string>
     <string name="map_api">AIzaSyDlrAXw5AgUrFOrLZJC8RcK8ADQ4Vb_Jaw</string>
+    <string name="api_key_otp">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</string>
+
 </resources>

@@ -84,7 +84,7 @@ public class VerifyEmail extends AppCompatActivity {
 
         javax.mail.Session session = javax.mail.Session.getInstance(props, new javax.mail.Authenticator() {
             protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                return new javax.mail.PasswordAuthentication(currentUser.getEmail(), "vupewdwuuybexrga"); // Email và mật khẩu ứng dụng
+                return new javax.mail.PasswordAuthentication(currentUser.getEmail(), "mmwshuqjukaachrf"); // Email và mật khẩu ứng dụng
             }
         });
 
