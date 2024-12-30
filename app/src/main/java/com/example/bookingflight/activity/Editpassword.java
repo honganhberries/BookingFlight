@@ -43,11 +43,8 @@ public class Editpassword extends AppCompatActivity {
         txConfirmPassword = findViewById(R.id.txConfirmPassword);
         backButton = findViewById(R.id.backButton);
         btnSave = findViewById(R.id.btnSave);
-        // Nhận currentUser từ Intent
+
         currentUser = getIntent().getParcelableExtra("object_user");
-        if (currentUser != null) {
-            Log.d("User Info", "User maKH: " + currentUser.getMaKH());
-        }
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +64,13 @@ public class Editpassword extends AppCompatActivity {
 
                 if (validateInput(oldPassword, newPassword, confirmPassword)) {
                     if (checkOldPassword(oldPassword)) {
-                        updatePasswordOnServer(currentUser.getMaKH(), newPassword);
+                        // Lưu thông tin mật khẩu mới để xử lý sau
+                        Intent intent = new Intent(Editpassword.this, VerifyEmail.class);
+                        intent.putExtra("new_password", newPassword);
+//                        intent.putExtra("confirm_password", confirmPassword);
+                        intent.putExtra("object_user", currentUser);
+//                        intent.putExtra("maKH", currentUser.getMaKH());
+                        startActivity(intent);
                     } else {
                         Toast.makeText(Editpassword.this, "Mật khẩu cũ không đúng.", Toast.LENGTH_SHORT).show();
                     }
@@ -77,37 +80,6 @@ public class Editpassword extends AppCompatActivity {
             }
         });
     }
-
-    private void updatePasswordOnServer(String maKH, String newPassword) {
-        // Băm mật khẩu mới và tạo salt
-        String salt = BCrypt.gensalt();
-        String hashedNewPassword = BCrypt.hashpw(newPassword, salt);
-        Map<String, String> updateParams = new HashMap<>();
-        updateParams.put("password", hashedNewPassword); // Mật khẩu mới đã băm
-        updateParams.put("salt", salt);
-        updateParams.put("maKH", maKH);
-
-        Call<ApiResponse<List<User>>> callUpdate = ApiService.searchFlight.updatePassw(maKH, updateParams);
-        callUpdate.enqueue(new Callback<ApiResponse<List<User>>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<List<User>>> call, Response<ApiResponse<List<User>>> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(Editpassword.this, "Cập nhật mật khẩu thành công.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Editpassword.this, LoginProfile.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(Editpassword.this, "Cập nhật dữ liệu thất bại.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse<List<User>>> call, Throwable t) {
-                Toast.makeText(Editpassword.this, "Có lỗi khi kết nối đến server.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private boolean checkOldPassword(String oldPassword) {
         if (currentUser == null) {
             Toast.makeText(Editpassword.this, "Không tìm thấy người dùng.", Toast.LENGTH_SHORT).show();

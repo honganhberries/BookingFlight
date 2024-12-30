@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity {
                 } else if (response.code() == 401) {
                     // Email hoặc mật khẩu sai
                     runOnUiThread(() ->
-                            Toast.makeText(Login.this, "Sai email hoặc mật khẩu. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(Login.this, "Lỗi 401", Toast.LENGTH_SHORT).show()
                     );
                 } else {
                     runOnUiThread(() ->

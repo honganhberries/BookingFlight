@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -192,6 +193,10 @@ public class LoginProfile extends AppCompatActivity {
 
     private void performLogout() {
         SessionManager sessionManager = new SessionManager(getApplicationContext());
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("jwt_token");  // Xóa jwt_token
+        editor.apply();
         sessionManager.logout();
 
         Intent intent = new Intent(LoginProfile.this, Login.class);

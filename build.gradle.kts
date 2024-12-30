@@ -11,5 +11,8 @@ plugins {
 }
 
 //repositories {
-//    google()
+////    google()
+//    mavenCentral()  // Thêm dòng này nếu chưa có
+//    jcenter()       // Thêm dòng này nếu chưa có
 //}
+

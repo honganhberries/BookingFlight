@@ -124,6 +124,12 @@
         <activity
             android:name=".activity.WebContentActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.VerifyOtp"
+            android:exported="false" />
+        <activity
+            android:name=".activity.VerifyEmail"
+            android:exported="false" />
         <provider
             android:name=".activity.AirportSuggestion"
             android:authorities="com.example.bookingflight.activity.AirportSuggestion"
