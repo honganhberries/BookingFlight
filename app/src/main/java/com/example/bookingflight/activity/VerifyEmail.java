@@ -3,7 +3,6 @@ package com.example.bookingflight.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +20,8 @@ public class VerifyEmail extends AppCompatActivity {
     private Button btnSendOtp;
     private String generatedOtp;
     private User currentUser;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enteremail);
@@ -29,38 +30,30 @@ public class VerifyEmail extends AppCompatActivity {
         btnSendOtp = findViewById(R.id.btnSendOtp);
 
         currentUser = getIntent().getParcelableExtra("object_user");
-//        if (currentUser != null) {
-//            Log.d("User Info", "User maKH: " + currentUser.getMaKH());
-//        }
 
-        btnSendOtp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailInput.getText().toString().trim();
-                if (validateEmail(email)) {
-                    // Gửi OTP qua email
-                    sendOtp(email);
+        btnSendOtp.setOnClickListener(v -> {
+            String email = emailInput.getText().toString().trim();
+            if (validateEmail(email)) {
+                sendOtp(email);
 
-                    // Chuyển sang màn hình nhập OTP
-                    Intent intent = new Intent(VerifyEmail.this, VerifyOtp.class);
-                    intent.putExtra("email", email);
-                    intent.putExtra("object_user", currentUser);
-                    intent.putExtra("generatedOtp", generatedOtp);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(VerifyEmail.this, "Email không hợp lệ.", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(VerifyEmail.this, VerifyOtp.class);
+                intent.putExtra("email", email);
+                intent.putExtra("object_user", currentUser);
+                intent.putExtra("generatedOtp", generatedOtp);
+                intent.putExtra("new_password", getIntent().getStringExtra("new_password"));
+                startActivity(intent);
+            } else {
+                Toast.makeText(VerifyEmail.this, "Email không hợp lệ.", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     private boolean validateEmail(String email) {
         return email.contains("@") && email.contains(".");
     }
 
     private void sendOtp(String email) {
         generatedOtp = String.valueOf((int) (Math.random() * 900000) + 100000);
-
-        // Chạy tác vụ gửi email trong background thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {

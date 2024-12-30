@@ -38,46 +38,21 @@ public class VerifyOtp extends AppCompatActivity {
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
 
         currentUser = getIntent().getParcelableExtra("object_user");
-        if (currentUser != null) {
-            Log.d("User Info", "User maKH: " + currentUser.getMaKH());
-        }
-//        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-//        String maKH = sharedPreferences.getString("maKH", null);
+        receivedOtp = getIntent().getStringExtra("generatedOtp");
         String maKH = getIntent().getStringExtra("maKH");
-
-
-
         if (currentUser != null) {
             Log.d("User Info", "User maKH: " + currentUser.getMaKH());
-        } else if (maKH != null) {
-            Log.d("SharedPreferences", "User maKH: " + maKH);
         } else {
             Toast.makeText(this, "Không tìm thấy thông tin người dùng.", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-        // Nhận OTP từ VerifyEmail
-//        Intent intent = getIntent();
-//        receivedOtp = intent.getStringExtra("generatedOtp");
-        receivedOtp = getIntent().getStringExtra("generatedOtp");
-
-        btnVerifyOtp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String otp = otpInput.getText().toString().trim();
-                if (validateOtp(otp)) {
-                    // Lấy mật khẩu mới từ Intent
-                    Intent intent = getIntent();
-                    String newPassword = getIntent().getStringExtra("new_password");
-//                    String newPassword = intent.getStringExtra("new_password");
-                    // Cập nhật mật khẩu trên server
-                    updatePasswordOnServer(maKH, newPassword);
-//                    updatePasswordOnServer(maKH != null ? maKH : currentUser.getMaKH(), newPassword);
-
-
-                } else {
-                    Toast.makeText(VerifyOtp.this, "OTP không hợp lệ.", Toast.LENGTH_SHORT).show();
-                }
+        btnVerifyOtp.setOnClickListener(v -> {
+            String otp = otpInput.getText().toString().trim();
+            if (validateOtp(otp)) {
+                String newPassword = getIntent().getStringExtra("new_password");
+                updatePasswordOnServer(currentUser.getMaKH(), newPassword);
+            } else {
+                Toast.makeText(VerifyOtp.this, "OTP không hợp lệ.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,16 +76,11 @@ public class VerifyOtp extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // Cập nhật mật khẩu thành công
                     Toast.makeText(VerifyOtp.this, "Cập nhật mật khẩu thành công.", Toast.LENGTH_SHORT).show();
-
                     // Xóa jwt_token khỏi SharedPreferences sau khi thay đổi mật khẩu
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.remove("jwt_token");  // Xóa jwt_token
-                    editor.apply();  // Lưu thay đổi
+                    sharedPreferences.edit().remove("jwt_token").apply();  // Xóa jwt_token
 
-                    // Chuyển hướng người dùng về màn hình đăng nhập
-                    Intent intent = new Intent(VerifyOtp.this, Login.class);
-                    startActivity(intent);
+                    startActivity(new Intent(VerifyOtp.this, Login.class));
                     finish();  // Đóng màn hình hiện tại nếu cần
                 } else {
                     Toast.makeText(VerifyOtp.this, "Cập nhật dữ liệu thất bại.", Toast.LENGTH_SHORT).show();

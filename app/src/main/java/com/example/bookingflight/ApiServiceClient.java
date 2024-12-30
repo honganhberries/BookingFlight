@@ -30,7 +30,7 @@ public class ApiServiceClient {
 
             // Cấu hình Retrofit
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.14/TTCS/app/")
+                    .baseUrl("http://192.168.1.24/TTCS/app/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .callbackExecutor(Executors.newSingleThreadExecutor())
                     .client(client)  // Sử dụng OkHttpClient với interceptor
