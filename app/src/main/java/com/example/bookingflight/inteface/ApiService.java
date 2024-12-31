@@ -40,7 +40,7 @@ public interface ApiService {
             .create();
 
     ApiService searchFlight = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.24/TTCS/app/")
+            .baseUrl("http://192.168.1.14/TTCS/app/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);

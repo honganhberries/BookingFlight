@@ -12,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bookingflight.R;
 import com.example.bookingflight.model.User;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -74,27 +78,69 @@ public class VerifyEmail extends AppCompatActivity {
         });
     }
 
-    private void sendEmail(String to, String subject, String message) throws Exception {
-        // Cấu hình JavaMail API
-        java.util.Properties props = new java.util.Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+    private void sendEmail(String to, String subject, String message) {
+        new Thread(() -> {
+            try {
+                // API Key của bạn
+                String apiKey = getResources().getString(R.string.api_key_otp);
 
-        javax.mail.Session session = javax.mail.Session.getInstance(props, new javax.mail.Authenticator() {
-            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                return new javax.mail.PasswordAuthentication(currentUser.getEmail(), "mmwshuqjukaachrf"); // Email và mật khẩu ứng dụng
+                // URL endpoint của SendGrid API
+                URL url = new URL("https://api.sendgrid.com/v3/mail/send");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                // Thiết lập phương thức HTTP là POST
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Authorization", "Bearer " + apiKey);
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setDoOutput(true);
+
+                // Tạo nội dung JSON cho email
+                String jsonPayload = "{" +
+                        "\"personalizations\": [{" +
+                        "\"to\": [{" +
+                        "\"email\": \"" + to + "\"" +
+                        "}]," +
+                        "\"subject\": \"" + subject + "\"" +
+                        "}]," +
+                        "\"from\": {" +
+                        "\"email\": \"nguyenhonganh152002@gmail.com\"" +
+                        "}," +
+                        "\"content\": [{" +
+                        "\"type\": \"text/html\"," +
+                        "\"value\": \"" + message + "\"" +
+                        "}]" +
+                        "}";
+
+                // Gửi yêu cầu POST
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonPayload.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                // Xử lý phản hồi
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_ACCEPTED) {
+                    // Gửi thành công
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "OTP đã được gửi đến " + to, Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    // Lỗi khi gửi email
+                    runOnUiThread(() -> {
+                        Log.e("Email Error", "Lỗi khi gửi email: " + responseCode);
+                        Toast.makeText(this, "Lỗi khi gửi email.", Toast.LENGTH_SHORT).show();
+                    });
+                }
+
+                // Đóng kết nối
+                connection.disconnect();
+            } catch (IOException e) {
+                runOnUiThread(() -> {
+                    Log.e("Email Error", "Lỗi khi gửi email: " + e.getMessage(), e);
+                    Toast.makeText(this, "Lỗi khi gửi email.", Toast.LENGTH_SHORT).show();
+                });
             }
-        });
-
-        javax.mail.Message msg = new javax.mail.internet.MimeMessage(session);
-        msg.setFrom(new javax.mail.internet.InternetAddress(currentUser.getEmail(), false));
-        msg.setRecipients(javax.mail.Message.RecipientType.TO, javax.mail.internet.InternetAddress.parse(to));
-        msg.setSubject(subject);
-        msg.setContent(message, "text/html");
-        msg.setSentDate(new java.util.Date());
-
-        javax.mail.Transport.send(msg);
+        }).start();
     }
+
 }

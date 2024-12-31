@@ -3,10 +3,12 @@ package com.example.bookingflight.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,36 +32,52 @@ public class VerifyOtp extends AppCompatActivity {
     private Button btnVerifyOtp;
     private String receivedOtp;
     private User currentUser;
+    private TextView tvCountdown, tvResendOtp;
+    private CountDownTimer countDownTimer;
+    private boolean isOtpExpired = false;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterotp);
 
         otpInput = findViewById(R.id.etOtpCode);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
+        tvCountdown = findViewById(R.id.tvCountdown);
+        tvResendOtp = findViewById(R.id.tvResendOtp);
 
         currentUser = getIntent().getParcelableExtra("object_user");
         receivedOtp = getIntent().getStringExtra("generatedOtp");
-        String maKH = getIntent().getStringExtra("maKH");
-        if (currentUser != null) {
-            Log.d("User Info", "User maKH: " + currentUser.getMaKH());
-        } else {
-            Toast.makeText(this, "Không tìm thấy thông tin người dùng.", Toast.LENGTH_SHORT).show();
-            finish();
+
+        // Check if currentUser is null or does not have a valid maKH
+        if (currentUser == null || currentUser.getMaKH() == null) {
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity
+            return; // Prevent further processing
         }
+
         btnVerifyOtp.setOnClickListener(v -> {
             String otp = otpInput.getText().toString().trim();
-            if (validateOtp(otp)) {
+            if (isOtpExpired) {
+                // Show message if OTP is expired
+                Toast.makeText(VerifyOtp.this, "OTP đã hết hạn. Vui lòng ấn gửi lại OTP.", Toast.LENGTH_SHORT).show();
+            } else if (validateOtp(otp)) {
                 String newPassword = getIntent().getStringExtra("new_password");
+                // Proceed to update password only if currentUser has a valid maKH
                 updatePasswordOnServer(currentUser.getMaKH(), newPassword);
             } else {
                 Toast.makeText(VerifyOtp.this, "OTP không hợp lệ.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        tvResendOtp.setOnClickListener(v -> resendOtp());
+        startCountdown();
     }
 
     private boolean validateOtp(String otp) {
         return otp.equals(receivedOtp);
     }
+
     private void updatePasswordOnServer(String maKH, String newPassword) {
         // Băm mật khẩu mới và tạo salt
         String salt = BCrypt.gensalt();
@@ -86,6 +104,7 @@ public class VerifyOtp extends AppCompatActivity {
                     Toast.makeText(VerifyOtp.this, "Cập nhật dữ liệu thất bại.", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<ApiResponse<List<User>>> call, Throwable t) {
                 Toast.makeText(VerifyOtp.this, "Có lỗi khi kết nối đến server.", Toast.LENGTH_SHORT).show();
@@ -93,5 +112,26 @@ public class VerifyOtp extends AppCompatActivity {
         });
     }
 
-}
+    private void resendOtp() {
+        Toast.makeText(this, "Đã gửi lại mã OTP", Toast.LENGTH_SHORT).show();
+        startCountdown();
+    }
 
+    private void startCountdown() {
+        // Start a countdown of 1 minute (60 seconds)
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tvCountdown.setText(millisUntilFinished / 1000 + "s");
+            }
+
+            @Override
+            public void onFinish() {
+                tvCountdown.setText("Hết thời gian");
+                btnVerifyOtp.setEnabled(false); // Disable OTP verification after timeout
+                tvResendOtp.setEnabled(true); // Enable resend OTP button
+                Toast.makeText(VerifyOtp.this, "OTP đã hết hạn. Vui lòng gửi lại OTP.", Toast.LENGTH_SHORT).show();
+            }
+        }.start();
+    }
+}

@@ -16,6 +16,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    packagingOptions {
+        exclude ("META-INF/DEPENDENCIES")
+        exclude ("META-INF/NOTICE")
+        exclude ("META-INF/LICENSE")
+        exclude ("META-INF/LICENSE.txt")
+        exclude ("META-INF/NOTICE.txt")
+    }
     buildTypes {
         release {
             isMinifyEnabled = true // Làm rối mã
@@ -42,8 +49,6 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth:23.1.0")
     implementation("com.google.firebase:firebase-messaging:24.1.0")
     implementation ("org.osmdroid:osmdroid-android:6.1.20")
-
-
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -68,20 +73,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("androidx.core:core:1.15.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
-    //Email
-//    implementation ("com.github.johnkil:android-mailcore2:0.5.1")
+    //Email with OTP
+    implementation ("com.sendgrid:sendgrid-java:4.7.2")
 
-//    implementation ("javax.mail:javax.mail-api:1.6.2")
-//    implementation ("com.sun.mail:javax.mail:1.6.2")
-//    implementation ("org.eclipse.angus:angus-mail:1.0.0")
-//    implementation ("org.eclipse.angus:angus-activation:1.0.0")
-
-    implementation ("com.sun.mail:android-mail:1.6.5")
-    implementation ("com.sun.mail:android-activation:1.6.5")
-
-
-    //
-//    implementation ("org.bouncycastle:bcprov-jdk15on:1.70") // Bouncy Castle
-//    implementation ("org.conscrypt:conscrypt-android:2.5.1")  // Conscrypt
-//    implementation ("org.openjsse:openjsse:1.0.0")
 }
