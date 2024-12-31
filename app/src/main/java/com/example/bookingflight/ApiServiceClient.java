@@ -35,8 +35,6 @@ public class ApiServiceClient {
                     .callbackExecutor(Executors.newSingleThreadExecutor())
                     .client(client)  // Sử dụng OkHttpClient với interceptor
                     .build();
-
-            // Tạo ApiService từ Retrofit
             apiService = retrofit.create(ApiService.class);
         }
         return apiService;

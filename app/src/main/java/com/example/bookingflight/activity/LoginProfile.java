@@ -18,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingflight.ApiServiceClient;
 import com.example.bookingflight.R;
 import com.example.bookingflight.adapter.NotificationAdapter;
 import com.example.bookingflight.adapter.TicketAdapter;
+import com.example.bookingflight.inteface.ApiService;
 import com.example.bookingflight.model.Notification;
 import com.example.bookingflight.model.User;// Make sure this is imported
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -169,7 +171,8 @@ public class LoginProfile extends AppCompatActivity {
 
     private void getListUser() {
         Map<String, String> options = new HashMap<>();
-        searchFlight.getListUser(options)
+        ApiService apiService = ApiServiceClient.getApiService(this);
+        apiService.getListUser(options)
                 .enqueue(new Callback<ApiResponse<List<User>>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<List<User>>> call, Response<ApiResponse<List<User>>> response) {
@@ -181,6 +184,10 @@ public class LoginProfile extends AppCompatActivity {
                                 fullname.setText(currentUser.getFullname());
                             }
                             Log.e("List User", mListUser.size() + "");
+                        }
+                        else {
+                            Log.e("API Error", "Response Code: " + response.code());
+                            Log.e("API Error", "Error Body: " + response.errorBody());
                         }
                     }
 
